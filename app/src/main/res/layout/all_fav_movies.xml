@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="?android:attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/fav_movie_poster"
+        android:layout_margin="10dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/digimon"
+        android:layout_alignParentStart="true"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/fav_movie_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:text="Digimon Adventure"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@+id/fav_movie_poster"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/fav_movie_genre"
+        android:layout_margin="10dp"
+        android:text="Shonen,Adventure,School-Life"
+        android:layout_below="@+id/fav_movie_title"
+        android:layout_toRightOf="@+id/fav_movie_poster"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
