@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -24,6 +28,37 @@ public class MainActivity extends AppCompatActivity {
     MoviesAdapter moviesAdapter;
     ArrayList<Movie> retro_results = new ArrayList<>();
     Button test;
+    android.support.v7.widget.SearchView searchView;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.main_menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.movie_search);
+
+        searchView =(android.support.v7.widget.SearchView)menuItem.getActionView();
+
+        searchView.setOnQueryTextListener(listener);
+
+        return true;
+    }
+
+   public android.support.v7.widget.SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener() {
+       @Override
+       public boolean onQueryTextSubmit(String s) {
+           Intent intent = new Intent(getApplicationContext(),SearchedActivity.class);
+           intent.putExtra("name",s);
+           startActivity(intent);
+           return false;
+       }
+
+       @Override
+       public boolean onQueryTextChange(String s) {
+           return false;
+       }
+   };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
                startActivity(intent);
            }
        });
+
+
 
 
     }

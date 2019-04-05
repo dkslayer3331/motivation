@@ -57,8 +57,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
            itemView.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   Gson gson = new Gson();
-                   Movie selected_movie = movies.get(getAdapterPosition()) ;
                    Log.d("selcted for detail",movies.get(getAdapterPosition()).getId()+"");
                    Intent intent = new Intent(v.getContext(),DetailedInfo.class);
                    intent.putExtra("detailed",movies.get(getAdapterPosition()).getId());

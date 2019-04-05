@@ -19,6 +19,6 @@ public interface MovieAPI {
     Call<Cast> getCastDetail(@Path("id") long cast_id,@Query("api_key") String apiKey,@Query("append_to_response")String movie_credits);
 
     @GET("search/movie")
-    Call<MovieResponse> getSearchedMovies(@Path("id") long cast_id,@Query("api_key") String apiKey,@Query("query")String query);
+    Call<MovieResponse> getSearchedMovies(@Query("api_key") String apiKey,@Query("query")String query);
 
 }
