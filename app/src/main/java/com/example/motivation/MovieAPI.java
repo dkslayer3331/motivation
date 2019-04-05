@@ -1,7 +1,5 @@
 package com.example.motivation;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -20,5 +18,11 @@ public interface MovieAPI {
 
     @GET("search/movie")
     Call<MovieResponse> getSearchedMovies(@Query("api_key") String apiKey,@Query("query")String query);
+
+    @GET("movie/top_rated")
+    Call<MovieResponse> getTopRatedMovies(@Query("api_key") String apiKey);
+
+    @GET("movie/popular")
+    Call<MovieResponse> getPopularMovies(@Query("api_key") String apiKey);
 
 }

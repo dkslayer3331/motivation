@@ -25,8 +25,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView upcoming_movies_recyclerview;
-    MoviesAdapter moviesAdapter;
-    ArrayList<Movie> retro_results = new ArrayList<>();
+    RecyclerView popular_movies_recyclerview;
+    MoviesAdapter moviesAdapter;//for upcoming movies
+    MoviesAdapter pAdapter; // for popular movies
+    ArrayList<Movie> retro_results = new ArrayList<>(); // upcoming
+    ArrayList<Movie> popular_reults = new ArrayList<>();
     Button test;
     android.support.v7.widget.SearchView searchView;
 
@@ -67,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
         test = findViewById(R.id.test_button);
 
+        popular_movies_recyclerview = findViewById(R.id.popular_movies_recyclerview);
+        pAdapter = new MoviesAdapter(getApplicationContext(),popular_reults);
+        popular_movies_recyclerview.setAdapter(pAdapter);
+
         MovieAPI service = API.getInstance().getMovieAPI();
 
         service.getUpcomingMovies("a7fc563ba6989aec1e19d62d2d1985c9").enqueue(new Callback<MovieResponse>() {
@@ -76,6 +83,20 @@ public class MainActivity extends AppCompatActivity {
                 retro_results = response.body().getResults();
                 moviesAdapter = new MoviesAdapter(getApplicationContext(),retro_results);
                 upcoming_movies_recyclerview.setAdapter(moviesAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                Log.d("gege",t.getMessage());
+            }
+        });
+
+        service.getPopularMovies("a7fc563ba6989aec1e19d62d2d1985c9").enqueue(new Callback<MovieResponse>() {
+            @Override
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                popular_reults = response.body().getResults();
+                pAdapter = new MoviesAdapter(getApplicationContext(),popular_reults);
+                popular_movies_recyclerview.setAdapter(pAdapter);
             }
 
             @Override
