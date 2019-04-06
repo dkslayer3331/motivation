@@ -17,6 +17,7 @@ public abstract class FavMoviesDb extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     FavMoviesDb.class, "fav_movies_db")
                     .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
                     .build();
         }
         return instance;

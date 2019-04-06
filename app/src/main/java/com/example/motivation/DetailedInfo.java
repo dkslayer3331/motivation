@@ -1,6 +1,7 @@
 package com.example.motivation;
 
 import android.arch.persistence.room.util.StringUtil;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
@@ -51,6 +52,15 @@ public class DetailedInfo extends AppCompatActivity {
         return namesStr.toString();
     }
 
+    public boolean checkDuplicate(List<FavMovieObj> all_favs,Movie movie){
+        for (FavMovieObj favMovieObj:all_favs) {
+            if(favMovieObj.getMovie_id()== movie.getId()) return false;
+        }
+        return  true;
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +84,7 @@ public class DetailedInfo extends AppCompatActivity {
        //casts blank arraylist
         castAdapter = new CastAdapter(this,all_casts);
         casts_rv.setAdapter(castAdapter);
+
 
        // release_year.setText(detailed_movie.getRelease_date().substring(0,4));
 
@@ -130,7 +141,7 @@ public class DetailedInfo extends AppCompatActivity {
 
                 long movie_runtime_hour = response.body().getRuntime()/60;
 
-               if(movie_runtime_min >=1) duration.setText(movie_runtime_hour+"hr "+movie_runtime_min+"min");
+               if(movie_runtime_min >0) duration.setText(movie_runtime_hour+"hr "+movie_runtime_min+"min");
 
                else duration.setText(movie_runtime_hour+"hr");
 
@@ -156,13 +167,24 @@ public class DetailedInfo extends AppCompatActivity {
             public void onClick(View v) {
                 FavMoviesDb db = FavMoviesDb.getDatabase(v.getContext());
                 FavMoviesDao dao = db.favMoviesDao();
-                new insertAsyntask(dao).execute(detailed_movie);
-                Snackbar.make(v,"Added to favourite movies",Snackbar.LENGTH_LONG).show();
+
+                List<FavMovieObj> current_list = new Repository(getApplication()).getAllFavMovies();
+
+              if(checkDuplicate(current_list,detailed_movie)) {
+                  new insertAsyntask(dao).execute(detailed_movie);
+                  Snackbar.make(v,"Added to favourite movies",Snackbar.LENGTH_LONG).show();
+              }
+
+              else Snackbar.make(v,"Already added",Snackbar.LENGTH_LONG).show();
+
             }
 
         });
 
     }
+
+
+
 
     class insertAsyntask extends AsyncTask<Movie,Void,Void>{
 
@@ -191,6 +213,7 @@ public class DetailedInfo extends AppCompatActivity {
             Log.d("inserted movie",new Gson().toJson(fav));
             return null;
         }
+
     }
 
 }

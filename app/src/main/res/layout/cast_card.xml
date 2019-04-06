@@ -5,7 +5,7 @@
     android:layout_margin="5dp">
 
     <ImageView
-        android:src="@drawable/avatar"
+        android:src="@drawable/ava_three"
         android:id="@+id/cast_card_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

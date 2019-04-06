@@ -35,7 +35,7 @@ public class CastAdapter  extends RecyclerView.Adapter<CastAdapter.ViewHolder>{
        Cast cast = casts.get(i);
         viewHolder.cast_name.setText(cast.getName());
        viewHolder.character.setText(cast.getCharacter());
-       if(cast.getProfile_url()!=null) Glide.with(context).load("http://image.tmdb.org/t/p/w154"+cast.getProfile_url()).into(viewHolder.cast_poster);
+       if(cast.getProfile_url()!=null) Glide.with(context).load("http://image.tmdb.org/t/p/w300"+cast.getProfile_url()).into(viewHolder.cast_poster);
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class FavMovies extends AppCompatActivity {
 
@@ -20,6 +21,7 @@ public class FavMovies extends AppCompatActivity {
     FavMoviesAdapter favMoviesAdapter;
     List<FavMovieObj> all_fav_movies = new ArrayList<>();
     FloatingActionButton floatingActionButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +91,12 @@ public class FavMovies extends AppCompatActivity {
             favMoviesAdapter = new FavMoviesAdapter(getApplicationContext(),dao.getAllFavMovies());
             Log.d("fav_movie_size",dao.getAllFavMovies().size()+"");
             recyclerView.setAdapter(favMoviesAdapter);
-          //  favMoviesAdapter.notifyDataSetChanged();
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
         }
     }
 
