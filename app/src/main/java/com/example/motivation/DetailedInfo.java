@@ -12,9 +12,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -36,6 +40,8 @@ public class DetailedInfo extends AppCompatActivity {
     TextView writers;
     TextView movie_header;
     Button add_favs;
+    ProgressBar detail_progressbar;
+    LinearLayout detail_info_layout;
 
   List<String> all_genres = new ArrayList<>();
   ArrayList<Cast> all_casts = new ArrayList<>();
@@ -59,7 +65,15 @@ public class DetailedInfo extends AppCompatActivity {
         return  true;
     }
 
+   void showDetailProgress(){
+        detail_progressbar.setVisibility(View.VISIBLE);
+        detail_info_layout.setVisibility(View.GONE);
+   }
 
+   void showDetailView(){
+        detail_info_layout.setVisibility(View.VISIBLE);
+        detail_progressbar.setVisibility(View.GONE);
+   }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +83,13 @@ public class DetailedInfo extends AppCompatActivity {
         Intent intent = getIntent();
         long detailed = intent.getLongExtra("detailed",0);
         //System.out.println(detailed_movie.getTitle());
+
+        detail_info_layout = findViewById(R.id.detail_info_layout);
+        detail_progressbar = findViewById(R.id.detail_progress_bar);
+        Sprite doubleBounce = new DoubleBounce();
+        detail_progressbar.setIndeterminateDrawable(doubleBounce);
+
+        showDetailProgress();
 
         movie_header = findViewById(R.id.movie_title_header);
         add_favs = findViewById(R.id.add_to_favs);
@@ -153,6 +174,8 @@ public class DetailedInfo extends AppCompatActivity {
                 castAdapter = new CastAdapter(getApplicationContext(),response.body().getCredits().getCasts());
 
                 casts_rv.setAdapter(castAdapter);
+
+                showDetailView();
 
             }
 
