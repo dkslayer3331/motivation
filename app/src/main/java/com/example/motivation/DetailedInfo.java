@@ -207,7 +207,7 @@ public class DetailedInfo extends AppCompatActivity {
 
               if(checkDuplicate(current_list,detailed_movie)) {
                   new insertAsyntask(dao).execute(detailed_movie);
-                  Snackbar.make(v,"Added to favourite movies",Snackbar.LENGTH_LONG).show();
+                  Snackbar.make(v,"Added to favourite movies",Snackbar.LENGTH_LONG).setAction("See List",new FavListListener()).show();
               }
 
               else Snackbar.make(v,"Already added",Snackbar.LENGTH_LONG).show();
