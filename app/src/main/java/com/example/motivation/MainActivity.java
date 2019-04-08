@@ -13,6 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 
 import java.util.ArrayList;
 
@@ -32,6 +37,18 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Movie> popular_reults = new ArrayList<>();
     Button test;
     android.support.v7.widget.SearchView searchView;
+    ProgressBar progressBar;
+    LinearLayout main_layout;
+
+    void showProgressBar(){
+        progressBar.setVisibility(View.VISIBLE);
+        main_layout.setVisibility(View.GONE);
+    }
+
+    void hideProgressBar(){
+        progressBar.setVisibility(View.GONE);
+        main_layout.setVisibility(View.VISIBLE);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,6 +86,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         test = findViewById(R.id.test_button);
+        main_layout = findViewById(R.id.main_layout);
+        progressBar = findViewById(R.id.progress_bar);
+        Sprite doubleBounce = new DoubleBounce();
+        progressBar.setIndeterminateDrawable(doubleBounce);
+
+        showProgressBar();
 
         popular_movies_recyclerview = findViewById(R.id.popular_movies_recyclerview);
         pAdapter = new MoviesAdapter(getApplicationContext(),popular_reults);
@@ -83,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 retro_results = response.body().getResults();
                 moviesAdapter = new MoviesAdapter(getApplicationContext(),retro_results);
                 upcoming_movies_recyclerview.setAdapter(moviesAdapter);
+                hideProgressBar();
             }
 
             @Override
