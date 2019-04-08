@@ -29,8 +29,8 @@ public class FavMovies extends AppCompatActivity {
         setContentView(R.layout.activity_fav_movies);
 
         setTitle("Favourite Movies");
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.fav_movies_rv);
         floatingActionButton = findViewById(R.id.clear_fav_movies);

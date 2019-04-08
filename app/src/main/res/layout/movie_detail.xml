@@ -8,10 +8,11 @@
 
     <ImageView
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         android:id="@+id/movie_poster"
         android:src="@drawable/digimon"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="150dp" />
 
         <TextView
             android:id="@+id/movie_title"
