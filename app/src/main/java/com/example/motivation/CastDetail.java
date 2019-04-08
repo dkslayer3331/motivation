@@ -5,11 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +32,20 @@ public class CastDetail extends AppCompatActivity {
     RecyclerView known_for_movies;
     MoviesAdapter moviesAdapter;
     TextView cast_detail_title,birth_date,cast_roles,biography;
+    LinearLayout cast_detail_layout;
+    ProgressBar loading;
 
     ArrayList<Movie> known_movies = new ArrayList<>();
+
+    void showLoading(){
+        cast_detail_layout.setVisibility(View.INVISIBLE);
+        loading.setVisibility(View.VISIBLE);
+    }
+
+    void showCastDetail(){
+        loading.setVisibility(View.INVISIBLE);
+        cast_detail_layout.setVisibility(View.VISIBLE);
+    }
 
 //    public String getAllGenres(List<String> names)
 //    {
@@ -39,10 +57,30 @@ public class CastDetail extends AppCompatActivity {
 //        return namesStr.toString();
 //    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                 finish();
+                break;
+        }
+       return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cast_detail);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        cast_detail_layout = findViewById(R.id.cast_detail_layout);
+        loading = findViewById(R.id.cast_detail_pb);
+        Sprite doubleBounce = new DoubleBounce();
+        loading.setIndeterminateDrawable(doubleBounce);
+        showLoading();
 
         cast_profile = findViewById(R.id.cast_detail_profile);
         known_for_movies = findViewById(R.id.cast_detail_knownmovies);
@@ -75,9 +113,13 @@ public class CastDetail extends AppCompatActivity {
 
                 cast_detail_title.setText(response.body().getName());
 
+                setTitle(response.body().getName());
+
                 biography.setText(response.body().getBiography());
 
                 cast_roles.setText(response.body().getKnown_for_department());
+
+                showCastDetail();
 
             }
 

@@ -1,7 +1,5 @@
 package com.example.motivation;
 
-import android.arch.persistence.room.util.StringUtil;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
@@ -9,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,8 +26,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailedInfo extends AppCompatActivity {
 
@@ -76,9 +73,22 @@ public class DetailedInfo extends AppCompatActivity {
    }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_info);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         long detailed = intent.getLongExtra("detailed",0);
@@ -136,6 +146,8 @@ public class DetailedInfo extends AppCompatActivity {
                 Glide.with(getApplicationContext()).load("https://image.tmdb.org/t/p/w154"+response.body().getImg_url()).into(poster);
 
                 movie_header.setText(response.body().getTitle());
+
+                setTitle(response.body().getTitle());
 
                 for(Crew crew:crews){
                     if(crew.getJob().equals("Director")){

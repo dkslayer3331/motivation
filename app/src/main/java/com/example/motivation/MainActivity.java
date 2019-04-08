@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+       // getSupportActionBar().setHomeButtonEnabled(true);
+      //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         test = findViewById(R.id.test_button);
         main_layout = findViewById(R.id.main_layout);
         progressBar = findViewById(R.id.progress_bar);
