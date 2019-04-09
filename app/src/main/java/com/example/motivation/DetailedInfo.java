@@ -31,7 +31,9 @@ import retrofit2.Response;
 
 public class DetailedInfo extends AppCompatActivity {
 
-    TextView release_year,duration,genre,plot;
+    TextView release_year,duration,plot;
+    GenreAdapter genreAdapter;
+    RecyclerView genre_recyclerview;
     ImageView poster;
     RecyclerView casts_rv;
     CastAdapter castAdapter;
@@ -111,9 +113,12 @@ public class DetailedInfo extends AppCompatActivity {
         casts_rv = findViewById(R.id.casts_rv);
         release_year = findViewById(R.id.detail_year);
         duration = findViewById(R.id.detail_duration);
-        genre = findViewById(R.id.detail_genre);
+        //genre = findViewById(R.id.detail_genre);
         poster = findViewById(R.id.detailed_movie_poster);
         plot = findViewById(R.id.detail_movie_plot);
+        genre_recyclerview = findViewById(R.id.genres_rv);
+        genreAdapter = new GenreAdapter(new ArrayList<String>());
+        genre_recyclerview.setAdapter(genreAdapter);
 
        //casts blank arraylist
         castAdapter = new CastAdapter(this,all_casts);
@@ -126,6 +131,8 @@ public class DetailedInfo extends AppCompatActivity {
             public void onResponse(Call<Movie> call, Response<Movie> response) {
 
                 ArrayList<Genre> genre_obj = response.body().getGenres();
+
+                Log.d("fucking_genre",genre_obj.size()+"");
 
                 detailed_movie = response.body();
 
@@ -176,7 +183,8 @@ public class DetailedInfo extends AppCompatActivity {
                         all_genres.add(genre.getName());
                     }
 
-                genre.setText(getFormattedList(all_genres));
+               // genre.setText(getFormattedList(all_genres));
+                    genre_recyclerview.setAdapter(new GenreAdapter(all_genres));
 
                 long movie_runtime_min = response.body().getRuntime()%60;
 

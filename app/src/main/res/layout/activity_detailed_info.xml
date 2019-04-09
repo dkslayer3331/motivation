@@ -81,10 +81,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-
                 <LinearLayout
+                    android:id="@+id/date_and_duration"
                     android:orientation="horizontal"
-                    android:layout_margin="5dp"
+                    android:layout_margin="10dp"
                     android:layout_below="@+id/add_to_favs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -101,15 +101,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:id="@+id/detail_genre"
-                        android:padding="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/detail_genre"-->
+                        <!--android:padding="5dp"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content" />-->
 
                 </LinearLayout>
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/genres_rv"
+                    android:layout_below="@+id/date_and_duration"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
             </RelativeLayout>
+
+
 
             <android.support.v7.widget.CardView
                 android:layout_marginTop="5dp"

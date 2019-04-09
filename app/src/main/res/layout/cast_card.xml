@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#808080"
-        android:textColor="#ffffff"
+        android:textColor="#C0C0C0"
         android:padding="5dp"
         android:text="Taichi Yamato"/>
 

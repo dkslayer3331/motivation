@@ -7,11 +7,7 @@
         android:startColor="#3090C7"
         android:endColor="#3090C7"/>
 
-    <padding
-        android:bottom="5dp"
-        android:right="5dp"
-        android:top="5dp"
-        android:left="5dp"/>
+
 
     <stroke
         android:width="1dp"
