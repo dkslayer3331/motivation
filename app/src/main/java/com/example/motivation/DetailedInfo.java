@@ -59,12 +59,12 @@ public class DetailedInfo extends AppCompatActivity {
         return namesStr.toString();
     }
 
-//    public boolean checkDuplicate(List<FavMovieObj> all_favs,Movie movie){
-//        for (FavMovieObj favMovieObj:all_favs) {
-//            if(favMovieObj.getMovie_id()== movie.getId()) return false;
-//        }
-//        return  true;
-//    }
+    public boolean checkDuplicate(List<FavMovieObj> all_favs,Movie movie){
+        for (FavMovieObj favMovieObj:all_favs) {
+            if(favMovieObj.getMovie_id()== movie.getId()) return false;
+        }
+        return  true;
+    }
 
    void showDetailProgress(){
         detail_progressbar.setVisibility(View.VISIBLE);
@@ -211,7 +211,7 @@ public class DetailedInfo extends AppCompatActivity {
                 FavMoviesDb db = FavMoviesDb.getDatabase(DetailedInfo.this);
                 FavMoviesDao dao = db.favMoviesDao();
                 if(isChecked){
-                    new insertAsyntask(dao).execute(detailed_movie);
+                  if(checkDuplicate(dao.getAllFavMovies(),detailed_movie))  new insertAsyntask(dao).execute(detailed_movie);
                    if(show_snack_bar_add)  Snackbar.make(buttonView,"Added to favourite movies",Snackbar.LENGTH_LONG).setAction("See List",new FavListListener()).show();
                 }
                 else{
