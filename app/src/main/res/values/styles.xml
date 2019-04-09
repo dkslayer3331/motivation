@@ -8,4 +8,20 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="button_added">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@drawable/border_color</item>
+        <item name="android:text">Added to favourites</item>
+    </style>
+
+    <style name="button_add">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">#3090C7</item>
+        <item name="android:text">+ add to favourites</item>
+    </style>
+
 </resources>

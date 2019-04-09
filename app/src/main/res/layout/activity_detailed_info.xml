@@ -59,16 +59,28 @@
                     android:text="@string/story"
                     android:layout_height="wrap_content" />
 
-                <Button
+                <!--<Button-->
+                    <!--android:id="@+id/add_to_favs"-->
+                    <!--android:text="+ add to favourites"-->
+                    <!--android:textColor="#ffffff"-->
+                    <!--android:background="#3090C7"-->
+                    <!--android:layout_margin="10dp"-->
+                    <!--android:layout_toRightOf="@id/detailed_movie_poster"-->
+                    <!--android:layout_below="@+id/detail_movie_plot"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content" />-->
+
+                <ToggleButton
                     android:id="@+id/add_to_favs"
-                    android:text="+ add to favourites"
-                    android:textColor="#ffffff"
-                    android:background="#3090C7"
                     android:layout_margin="10dp"
-                    android:layout_toRightOf="@id/detailed_movie_poster"
+                    android:layout_toRightOf="@+id/detailed_movie_poster"
                     android:layout_below="@+id/detail_movie_plot"
+                    android:background="@drawable/check_fav_button"
+                    android:textOff="+ Add to Favourites"
+                    android:textOn="Added to Favourites"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
 
                 <LinearLayout
                     android:orientation="horizontal"

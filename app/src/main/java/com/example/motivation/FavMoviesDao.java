@@ -19,4 +19,7 @@ public interface FavMoviesDao {
 
    @Query("delete from fav_movies")
     void deleteAll();
+
+    @Query("DELETE FROM fav_movies WHERE movie_id = :movieId")
+     void removeMovie(long movieId);
 }

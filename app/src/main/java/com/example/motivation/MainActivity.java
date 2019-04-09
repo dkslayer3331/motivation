@@ -3,8 +3,6 @@ package com.example.motivation;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -24,8 +22,6 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,14 +36,19 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayout main_layout;
 
+
+    int show_flag = 0;
+
     void showProgressBar(){
         progressBar.setVisibility(View.VISIBLE);
         main_layout.setVisibility(View.GONE);
     }
 
     void hideProgressBar(){
-        progressBar.setVisibility(View.GONE);
-        main_layout.setVisibility(View.VISIBLE);
+        if(show_flag == 2){
+            progressBar.setVisibility(View.GONE);
+            main_layout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 retro_results = response.body().getResults();
                 moviesAdapter = new MoviesAdapter(getApplicationContext(),retro_results);
                 upcoming_movies_recyclerview.setAdapter(moviesAdapter);
+                show_flag++;
                 hideProgressBar();
             }
 
@@ -113,20 +115,25 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Log.d("gege",t.getMessage());
             }
+
         });
 
         service.getPopularMovies("a7fc563ba6989aec1e19d62d2d1985c9").enqueue(new Callback<MovieResponse>() {
+
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 popular_reults = response.body().getResults();
                 pAdapter = new MoviesAdapter(getApplicationContext(),popular_reults);
                 popular_movies_recyclerview.setAdapter(pAdapter);
+                show_flag++;
+                hideProgressBar();
             }
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                 Log.d("gege",t.getMessage());
             }
+
         });
 
         upcoming_movies_recyclerview = findViewById(R.id.upcoming_movies_recyclerview);
@@ -140,8 +147,6 @@ public class MainActivity extends AppCompatActivity {
                startActivity(intent);
            }
        });
-
-
 
 
     }

@@ -9,11 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.github.ybq.android.spinkit.sprite.Sprite;
@@ -36,9 +38,11 @@ public class DetailedInfo extends AppCompatActivity {
     TextView director;
     TextView writers;
     TextView movie_header;
-    Button add_favs;
+    ToggleButton add_favs;
     ProgressBar detail_progressbar;
     LinearLayout detail_info_layout;
+    boolean fav_button_status = false;
+    boolean show_snack_bar_add = true;
 
   List<String> all_genres = new ArrayList<>();
   ArrayList<Cast> all_casts = new ArrayList<>();
@@ -55,12 +59,12 @@ public class DetailedInfo extends AppCompatActivity {
         return namesStr.toString();
     }
 
-    public boolean checkDuplicate(List<FavMovieObj> all_favs,Movie movie){
-        for (FavMovieObj favMovieObj:all_favs) {
-            if(favMovieObj.getMovie_id()== movie.getId()) return false;
-        }
-        return  true;
-    }
+//    public boolean checkDuplicate(List<FavMovieObj> all_favs,Movie movie){
+//        for (FavMovieObj favMovieObj:all_favs) {
+//            if(favMovieObj.getMovie_id()== movie.getId()) return false;
+//        }
+//        return  true;
+//    }
 
    void showDetailProgress(){
         detail_progressbar.setVisibility(View.VISIBLE);
@@ -91,8 +95,7 @@ public class DetailedInfo extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        long detailed = intent.getLongExtra("detailed",0);
-        //System.out.println(detailed_movie.getTitle());
+        final long detailed = intent.getLongExtra("detailed",0);
 
         detail_info_layout = findViewById(R.id.detail_info_layout);
         detail_progressbar = findViewById(R.id.detail_progress_bar);
@@ -116,13 +119,6 @@ public class DetailedInfo extends AppCompatActivity {
         castAdapter = new CastAdapter(this,all_casts);
         casts_rv.setAdapter(castAdapter);
 
-
-       // release_year.setText(detailed_movie.getRelease_date().substring(0,4));
-
-       // plot.setText(detailed_movie.getOverview());
-
-//        Glide.with(this).load("https://image.tmdb.org/t/p/w154"+detailed_movie.getImg_url()).into(poster);
-
         MovieAPI service = API.getInstance().getMovieAPI();
 
         service.getMovieDetail(detailed,"a7fc563ba6989aec1e19d62d2d1985c9","credits").enqueue(new Callback<Movie>() {
@@ -134,6 +130,18 @@ public class DetailedInfo extends AppCompatActivity {
                 detailed_movie = response.body();
 
                 ArrayList<Crew> crews = response.body().getCredits().getCrews();
+
+                FavMoviesDb db = FavMoviesDb.getDatabase(getApplicationContext());
+                FavMoviesDao dao = db.favMoviesDao();
+
+                List<FavMovieObj> all_favs = new Repository(getApplication()).getAllFavMovies();
+
+                for (FavMovieObj favMovieObj:all_favs) {
+                    if(favMovieObj.getMovie_id()== detailed){
+                        show_snack_bar_add = false;
+                        add_favs.setChecked(true);
+                    }
+                }
 
                 Log.d("all crews",new Gson().toJson(crews));
 
@@ -197,28 +205,67 @@ public class DetailedInfo extends AppCompatActivity {
             }
         });
 
-        add_favs.setOnClickListener(new View.OnClickListener() {
+        add_favs.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                FavMoviesDb db = FavMoviesDb.getDatabase(v.getContext());
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                FavMoviesDb db = FavMoviesDb.getDatabase(DetailedInfo.this);
                 FavMoviesDao dao = db.favMoviesDao();
-
-                List<FavMovieObj> current_list = new Repository(getApplication()).getAllFavMovies();
-
-              if(checkDuplicate(current_list,detailed_movie)) {
-                  new insertAsyntask(dao).execute(detailed_movie);
-                  Snackbar.make(v,"Added to favourite movies",Snackbar.LENGTH_LONG).setAction("See List",new FavListListener()).show();
-              }
-
-              else Snackbar.make(v,"Already added",Snackbar.LENGTH_LONG).show();
-
+                if(isChecked){
+                    new insertAsyntask(dao).execute(detailed_movie);
+                   if(show_snack_bar_add)  Snackbar.make(buttonView,"Added to favourite movies",Snackbar.LENGTH_LONG).setAction("See List",new FavListListener()).show();
+                }
+                else{
+                    show_snack_bar_add = true;
+                    new removeAsyntask(dao).execute(detailed);
+                    Toast.makeText(DetailedInfo.this, "Removed", Toast.LENGTH_SHORT).show();
+                }
             }
-
         });
+
+//        add_favs.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FavMoviesDb db = FavMoviesDb.getDatabase(v.getContext());
+//                FavMoviesDao dao = db.favMoviesDao();
+//
+//                List<FavMovieObj> current_list = new Repository(getApplication()).getAllFavMovies();
+//
+//              if(checkDuplicate(current_list,detailed_movie)) {
+//                  fav_button_status = true;
+//              }
+//
+//                else fav_button_status = false;
+//
+//                if(fav_button_status){
+//                     Log.d("YMT","yes");
+//                     new insertAsyntask(dao).execute(detailed_movie);
+//                     Snackbar.make(v,"Added to favourite movies",Snackbar.LENGTH_LONG).setAction("See List",new FavListListener()).show();
+//                }
+//
+//                else {
+//                    Log.d("YMT","no");
+//                    Snackbar.make(v,"Already Added",Snackbar.LENGTH_LONG).show();
+//                }
+//
+//            }
+//
+//        });
 
     }
 
+    class removeAsyntask extends AsyncTask<Long,Void,Void>{
+        private FavMoviesDao favMoviesDao;
 
+        public removeAsyntask(FavMoviesDao favMoviesDao) {
+            this.favMoviesDao = favMoviesDao;
+        }
+
+        @Override
+        protected Void doInBackground(Long... longs) {
+            favMoviesDao.removeMovie(longs[0]);
+            return null;
+        }
+    }
 
 
     class insertAsyntask extends AsyncTask<Movie,Void,Void>{
