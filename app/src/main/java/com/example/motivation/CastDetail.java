@@ -47,17 +47,6 @@ public class CastDetail extends AppCompatActivity {
         cast_detail_layout.setVisibility(View.VISIBLE);
     }
 
-//    public String getAllGenres(List<String> names)
-//    {
-//        StringBuilder namesStr = new StringBuilder();
-//        for(String name : names)
-//        {
-//            namesStr = namesStr.length() > 0 ? namesStr.append(",").append(name) : namesStr.append(name);
-//        }
-//        return namesStr.toString();
-//    }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
